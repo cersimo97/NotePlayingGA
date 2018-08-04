@@ -29,7 +29,8 @@ class Population {
     finished = false;
     generations = 0;
 
-    perfectScore = pow(2, target.length);
+    // target.length * 2 = target.length (for pitch parameter) + target.length (for duration parameter)
+    perfectScore = pow(2, target.length * 2);
   }
 
   // Fill our fitness array with a value for every member of the population

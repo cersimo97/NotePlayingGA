@@ -24,7 +24,7 @@ class DNA {
   DNA(int num) {
     genes = new Note[num];
     for (int i = 0; i < genes.length; i++) {
-      genes[i] = new Note((int)random(300, 600), 400);
+      genes[i] = new Note(floor(random(300, 600)), (int)random(50, 1000));
     }
   }
 
@@ -32,11 +32,11 @@ class DNA {
   void fitness (Note[] target) {
     float score = 0.0f;
     float fitnessPitch = 0.0f;
-    // float fitnessDuration = 0;
+    float fitnessDuration = 0;
     for (int i = 0; i < genes.length; i++) {
       fitnessPitch = map(abs(target[i].pitch - genes[i].pitch), 0, 300, 1, 0);  // 300 = 600Hz - 300Hz
-      // fitnessDuration = 1 - abs(target[i].duration - genes[i].duration) / 950; // 950 = 1000ms - 50ms
-      score += fitnessPitch; // + fitnessDuration;
+      fitnessDuration = map(abs(target[i].duration - genes[i].duration), 0, 950, 1, 0); // 950 = 1000ms - 50ms
+      score += fitnessPitch + fitnessDuration;
       /*
       if (genes[i] == target[i]) {
        score++;
@@ -56,8 +56,8 @@ class DNA {
 
     // Half from one, half from the other
     for (int i = 0; i < genes.length; i++) {
-      if (i > midpoint) child.genes[i] = new Note(genes[i].pitch, 100);
-      else              child.genes[i] = new Note(partner.genes[i].pitch, 100);
+      if (i > midpoint) child.genes[i] = new Note(genes[i].pitch, partner.genes[i].duration);
+      else              child.genes[i] = new Note(partner.genes[i].pitch, genes[i].duration);
     }
 
     return child;
@@ -67,7 +67,8 @@ class DNA {
   void mutate(float mutationRate) {
     for (int i = 0; i < genes.length; i++) {
       if (random(1) < mutationRate) {
-        genes[i].pitch = (int)random(300, 600);
+        genes[i].pitch = floor(random(300, 600));
+        genes[i].duration = floor(random(50, 1000));
       }
     }
   }

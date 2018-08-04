@@ -2,9 +2,9 @@ import processing.sound.*;
 
 class Note {
   int pitch;
-  long duration;
+  int duration;
 
-  Note(int p, long d) {
+  Note(int p, int d) {
     this.pitch = p;
     this.duration = d;
   }
